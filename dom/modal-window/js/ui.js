@@ -1,2 +1,2 @@
-// Инициализация функционала модального окна
-initModalUi();
+'use strict';
+document.addEventListener('DOMContentLoaded', initModalUi);
