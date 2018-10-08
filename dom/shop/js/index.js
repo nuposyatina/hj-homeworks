@@ -1,14 +1,15 @@
 
 'use strict';
-const btns = document.querySelectorAll('button.add');
+
+const buttons = document.querySelectorAll('button.add');
+const totalPrice = document.querySelector('#cart-total-price');
 const cartCount = document.querySelector('#cart-count');
-const cartTotalPrice = document.querySelector('#cart-total-price');
-let counter = 0;
+let count = 0;
 let sum = 0;
 
-for (let btn of btns) {
-	btn.addEventListener('click', () => {
-		cartCount.innerText = ++counter;
-		cartTotalPrice.innerText = getPriceFormatted(sum += parseInt(event.currentTarget.dataset.price));
-	});
+for (let button of buttons) {
+	button.addEventListener('click', (e) => {
+		cartCount.textContent = ++count;
+		totalPrice.textContent = getPriceFormatted(sum += parseInt(event.currentTarget.dataset.price));
+	})
 }
