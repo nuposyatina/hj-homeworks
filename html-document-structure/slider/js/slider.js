@@ -1,42 +1,25 @@
 'use strict';
 
 const slider = document.querySelector('.slider'),
-  navButtons = slider.querySelectorAll('.slider-nav a'),
+  nav = slider.querySelector('.slider-nav'),
   slides = slider.querySelectorAll('.slides .slide');
-
-slides[0].classList.add('slide-current');
-
+const prevBtn = document.querySelector('[data-action="prev"]');
+const nextBtn = document.querySelector('[data-action="next"]');
+const firstBtn = document.querySelector('[data-action="first"]');
+const lastBtn = document.querySelector('[data-action="last"]');
 let currentSlide,
-  activeSlide,
-  prevBtn,
-  nextBtn,
-  firstBtn,
-  lastBtn;
+  activeSlide;
 
-Array.from(navButtons).forEach(function(button) {
-  switch (button.getAttribute('data-action')) {
-    case 'prev':
-      prevBtn = button;
-      break;
+document.addEventListener('DOMContentLoaded', start);
 
-    case 'next':
-      nextBtn = button;
-      break;
-
-    case 'first':
-      firstBtn = button;
-      break;
-
-    case 'last':
-      lastBtn = button;
-      break;
-  }
-});
-
-document.addEventListener('DOMContentLoaded', checkDisabled);
+function start() {
+  slides[0].classList.add('slide-current');
+  checkDisabled();
+  nav.addEventListener('click', getNewSlide);
+};
 
 function checkDisabled() {
-  currentSlide = slider.querySelector('.slide-current')
+  const currentSlide = slider.querySelector('.slide-current')
   if (currentSlide.nextElementSibling) {
     nextBtn.classList.remove('disabled');
     lastBtn.classList.remove('disabled');
@@ -51,55 +34,34 @@ function checkDisabled() {
     prevBtn.classList.add('disabled');
     firstBtn.classList.add('disabled');
   }
-}
+};
 
+function getNewSlide() {
+  toggleSlide(event.target);
+  checkDisabled();
+};
 
-
-prevBtn.addEventListener('click', function() {
+function toggleSlide(button) {
   currentSlide = slider.querySelector('.slide-current');
-  activeSlide = currentSlide.previousElementSibling;
+  switch (button.dataset.action) {
+    case 'next':
+      activeSlide = currentSlide.nextElementSibling;
+      break;
+    case 'prev':
+      activeSlide = currentSlide.previousElementSibling;
+      break;
+    case 'first':
+      activeSlide = slider.querySelector('.slides').firstElementChild;
+      break;
+    case 'last':
+      activeSlide = slider.querySelector('.slides').lastElementChild;
+      break;
+  }
   if (!activeSlide) {
-    return;
+    return true;
   } else {
     currentSlide.classList.remove('slide-current');
     activeSlide.classList.add('slide-current');
     checkDisabled()
   }
-
-})
-
-nextBtn.addEventListener('click', function() {
-  currentSlide = slider.querySelector('.slide-current');
-  activeSlide = currentSlide.nextElementSibling;
-  if (!activeSlide) {
-    return;
-  } else {
-    currentSlide.classList.remove('slide-current');
-    activeSlide.classList.add('slide-current');
-    checkDisabled()
-  }
-})
-
-firstBtn.addEventListener('click', function() {
-  currentSlide = slider.querySelector('.slide-current');
-  activeSlide = slider.querySelector('.slides').firstElementChild;
-  if (!activeSlide) {
-    return;
-  } else {
-    currentSlide.classList.remove('slide-current');
-    activeSlide.classList.add('slide-current');
-    checkDisabled()
-  }
-})
-
-lastBtn.addEventListener('click', function() {
-  currentSlide = slider.querySelector('.slide-current');
-  activeSlide = slider.querySelector('.slides').lastElementChild;
-  if (!activeSlide) {
-    return;
-  } else {
-    currentSlide.classList.remove('slide-current');
-    activeSlide.classList.add('slide-current');
-    checkDisabled()
-  }
-})
+};
