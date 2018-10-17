@@ -118,7 +118,7 @@ document.addEventListener('click', (event) => {
     let tmpCtx = tmpCanvas.getContext('2d');
     tmpCanvas.width = image.width;
     tmpCanvas.height = image.height;
-    tmpCtx.drawImage(image, 0, 0);
+    tmpCtx.drawImage(image, 0, 0, image.width, image.height);
     tmpCanvas.toBlob((blob) => {
       let formData = new FormData();
       formData.append('image', blob);
